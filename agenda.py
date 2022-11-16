@@ -1,14 +1,14 @@
-import orgparse, os
+import orgparse, os, datetime
 
 home = os.getenv('HOME')
 notebooks = ["inbox", "home", "work", "payments", "reminders"]
 
-def is_today(date):
-    if orgparse.date.OrgDate((2022,11,16,0,0,0), (2022,11,16,23,59,59)).has_overlap(date):
-        return True
-    return False
+def is_today(date) -> bool:
+    if not date or not date.start:
+        return False
+    return orgparse.date.is_same_day(datetime.datetime.now(), date.start)
 
-def by_scheduled(node):
+def by_scheduled(node) -> datetime.datetime:
     return node.scheduled.start
 
 agenda = []
